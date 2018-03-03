@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>JavaScript - read JSON from URL</title>
+   
+</head>
+
+
+
+
+
+
+<body>
+
+
+
+<div >
+
+<script>
+
+
+
+//showMessage();
+
+document.writeln('<style type="text/css">table{background: #B0E0E6;}</style>');
+document.writeln('<style type="text/css">p{font-size: 150%;background: #B0E0E6;}</style>');
+document.writeln('<style type="text/css">th{text-align: left;background: #B0E0E6;}</style>');
+document.writeln('<style type="text/css">td{background: #B0E0E6;;}</style>');
+document.writeln('<style type="text/css">.uzko{width: 20%;background: #B0E0E6;}</style>');
+document.writeln('<style type="text/css">.like{font-size: 200%;background: #00FF00;text-align: center;}</style>');
+document.writeln('<style type="text/css">.dislike{font-size: 200%;background: #FF1493;text-align: center;}</style>');
+document.writeln('<style type="text/css">.ctrl{}</style>');
+document.writeln('<style type="text/css">.ctrl1{}</style>');
+
+
+document.writeln("<aside>kjh</aside>");
+
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+         var myObj = JSON.parse(this.responseText);
+          //document.writeln("<p>"+JSON.stringify(myObj[1])+"</p>");
+		      
+ 
+  var i;
+i=0;
+document.writeln('<table  ><tr ><td><table class="ctrl">');
+
+do{
+document.writeln('<tr ><td ><p >'+myObj[i].requests+'</p></td><td  class="uzko"><table ><tr ><td class="like">:-)</td></tr><tr><td class="dislike">:-(</td></tr></table></td></tr> ');
+i++;
+
+}while(i<myObj.length);
+ 
+//document.writeln('<style type="text/css">.uzko{width: 80%;background: #B0E0E6;font-size:100%;}</style>');
+
+document.writeln('</table></td><td><table class="ctrl1">');
+i=0;
+do{
+document.writeln('<tr ><td ><p >jkh'+myObj[i].requests+'</p></td><td  class="uzko"><table ><tr ><td class="like">:-)</td></tr><tr><td class="dislike">:-(</td></tr></table></td></tr> ');
+i++;
+
+}while(i<myObj.length);
+document.writeln('</table></td></tr></table  >');
+
+}
+  };
+  xmlhttp.open("GET", "http://vislouhi.000webhostapp.com/giveMeRequest.php", false);
+  xmlhttp.send();
+//showMessage();
+document.writeln("kjh");
+
+
+var f=false;
+var f1=true;
+var f2=true;
+var currentPercent,currentPercent1;
+
+
+if (f1){currentPercent=100;currentPercent1=0;}else{currentPercent=0;currentPercent1=100;}
+	
+	//i = (currentX-e.pageX);
+	var tbl=document.getElementsByClassName('ctrl');
+	var j=0;
+	do{
+		
+	tbl[j].style.width = Math.floor(currentPercent)+'%';
+	
+	tbl[j].style.fontSize = Math.floor(currentPercent*2)+'%';
+	j++;
+	}while(j<tbl.length);
+	
+	
+	tbl=document.getElementsByClassName('ctrl1');
+	 j=0;
+	do{
+		
+	tbl[j].style.width = Math.floor(currentPercent1)+'%';
+	
+	tbl[j].style.fontSize = Math.floor(currentPercent1*2)+'%';
+	j++;
+	}while(j<tbl.length);
+
+
+
+  document.addEventListener("touchmove", handleMove, false);
+  document.addEventListener("touchstart", handleEnd, false);
+  function handleEnd(e) {
+     // f1=false;
+      f=false;
+      f2=false;
+      f3=false;
+  }
+  
+ var curY,curY1;
+ f=false;
+ var f3=false;
+  function handleMove(e) {
+   
+   if (f2&&!f3){if(Math.abs(Math.floor(curY-e.changedTouches[0].pageX))>155){f3=true;f1=!f1}}
+    if (f2==false){f2=true;curY=e.changedTouches[0].pageX;}
+    
+    
+    curY1=e.changedTouches[0].pageY;
+   //if (e.changedTouches[0].pageY!=e.changedTouches[1].pageY){alert(sdf);}
+   //alert(e.changedTouches[0].pageY+"  "+e.changedTouches[1].pageY);
+     var i;
+	if (f1){currentPercent=100;currentPercent1=0;}else{currentPercent=0;currentPercent1=100;}
+	
+	//i = (currentX-e.pageX);
+	var tbl=document.getElementsByClassName('ctrl');
+	var j=0;
+	do{
+		
+	tbl[j].style.width = Math.floor(currentPercent)+'%';
+	
+	tbl[j].style.fontSize = Math.floor(currentPercent*2)+'%';
+	j++;
+	}while(j<tbl.length);
+	
+	
+	tbl=document.getElementsByClassName('ctrl1');
+	 j=0;
+	do{
+		
+	tbl[j].style.width = Math.floor(currentPercent1)+'%';
+	
+	tbl[j].style.fontSize = Math.floor(currentPercent1*2)+'%';
+	j++;
+	}while(j<tbl.length);
+	
+      
+  }
+</script>
+   </div> 
+</body>
+</html>
