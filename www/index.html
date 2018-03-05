@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+
+    <style type="text/css">p{}</style>
+	<style type="text/css">table{background: #B0E0E6;}</style>
+	<style type="text/css">body{background: #B0E0E6;}</style>
+	<style type="text/css">textarea{background: #B0E0E6;}</style>
+	<style type="text/css">
+	.refresh {
+	position: fixed;
+    horizontal-align: middle;
+    overflow: hidden;
+	left:50%;
+    
+    margin: auto;
+}
+.loading {
+	position: fixed;
+    horizontal-align: middle;
+    overflow: hidden;
+	left:30%;
+    
+    margin: auto;
+}
+.fontsize{font-size: 50%;
+width: 100%;
+ animation: blinker 0.5s cubic-bezier(.5, 0, 1, 1) infinite alternate;
+}
+
+@keyframes blinker { to { opacity: 0; } }
+
+	
+	
+	</style>
+    <title>Hello World</title>
+</head>
+
+<body>
+   
+     
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+       
+		document.writeln('<input class="refresh" id="refreshRqst"  type="submit" value="Обновить">');
+		document.writeln('<h3 id="requesterSign" >Requester</h3>');
+		document.writeln('<h1 id="loaderScreen" class="loading" ><p class="fontsize">-> -> -> Г <- <- <-</p><p class="fontsize">-> -> -> р <- <- <-</p><p class="fontsize">-> -> -> у <- <- <-</p><p class="fontsize">-> ->-> ж <-<- <-</p><p class="fontsize">-> -> -> у <- <- <-</p></h1>');
+		
+		document.addEventListener("deviceready", startApp(), false);
+		
+		function startApp()
+		{
+		
+		document.writeln('<table id="rqstTbl"></table>');
+		var requestNumber = [];
+		var k;
+		var tbl = document.getElementById("rqstTbl");
+		var s1,s2,s3,s4,input1,txtarea;
+		var stlb1 = [];
+		var stlb2 = [];
+		var stlb3 = [];
+		var like = [];
+		var dislike = [];
+		
+		s1 = document.createElement('td');
+		s2 = document.createElement('td');
+		s3 = document.createElement('td');
+		s4 = document.createElement('td');
+		
+		tbl.appendChild(s1);
+		tbl.appendChild(s2);
+		tbl.appendChild(s3);
+		txtarea=document.createElement('textarea');
+		txtarea.rows=10;
+		txtarea.cols=33;
+		s4.appendChild(txtarea);
+		
+		input1=document.createElement('input');
+		input1.type="submit";
+		input1.value="Отправить";
+		s4.appendChild(input1);
+		tbl.appendChild(s4);
+		
+		s1.style.width="10%";
+	s1.style.fontSize="100%";
+	s2.style.width="80%";
+	s2.style.fontSize="100%";
+	s3.style.width="10%";
+	s3.style.fontSize="100%";
+	s4.style.width="0%";
+	s4.style.fontSize="0%"; 
+   
+	input1.style.display = 'none';
+
+	txtarea.style.display = 'none';
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		var event = new CustomEvent('idsLoaded',{ 'idsList': '' });
+		var eventStartTimer = new Event('startRefreshTimer');
+		var idsList;
+		var idProcessRefresh=true;
+		var requestsNumberOnScreen=1;
+		var server1="http://vislouhi.000webhostapp.com";
+		var server2="http://vislouhivislouhi.000webhostapp.com";
+		var serverNum=1;
+		var serverName=server1;
+		
+		
+		document.addEventListener('idsLoaded', prepareIdList, false);
+		document.addEventListener("touchmove", handleMove, false);
+		document.addEventListener("touchstart", handleEnd, false);
+		document.addEventListener("startRefreshTimer",startRefreshTimer, false);
+		input1.addEventListener("touchstart", sendRqst, false);
+		document.getElementById('refreshRqst').addEventListener("touchstart", loadIdList, false);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		function handleLike(e){
+	//alert(e.target.style.color.localeCompare("white"));
+	
+	
+
+	
+	
+	if (e.target.style.color.localeCompare("white")!=0){
+	
+		
+		
+		
+		
+		setIdList(requestNumber[parseInt(e.target.id)],stlb2[parseInt(e.target.id)].innerHTML);
+		
+		
+		e.target.removeEventListener("touchstart", handleLike, false);
+		
+		
+		//window.localStorage.setItem("like"+requestNumber[parseInt(e.target.id)], stlb2[parseInt(e.target.id)].innerHTML);
+		//alert(window.localStorage.getItem("like"+requestNumber[parseInt(e.target.id)]));
+	
+	
+	e.target.style.color = "white";}else{e.target.style.color = "black";
+	
+	//window.localStorage.removeItem("like"+requestNumber[parseInt(e.target.id)], stlb2[parseInt(e.target.id)].innerHTML);
+		//alert(window.localStorage.getItem("like"+requestNumber[parseInt(e.target.id)]));
+	
+	
+	
+	}
+	//alert(requestNumber[parseInt(e.target.id)]);
+	
+	}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		function startRefreshTimer(e) {
+		
+		
+		setInterval(function() { 
+		
+		sendLikedRequests();
+		//idProcessRefresh=false;	
+		//alert();
+		//loadIdList();
+		}, 600000);
+		
+		
+		
+		setInterval(function() { 
+		
+		idProcessRefresh=false;	
+		//alert();
+		loadIdList();
+		}, 10000);
+		
+		
+		
+		
+		
+		}
+		
+		function changeServer(){
+			
+			serverNum++;
+			if (serverNum==1){serverName=server1;}
+			if (serverNum==2){serverName=server1;}
+			if (serverNum==2){serverNum=0;}
+			
+			//alert(serverNum);
+		}
+		function addRequests(list) {
+			
+		
+		//alert(JSON.stringify(list));
+		
+		 var xmlhttp = new XMLHttpRequest();
+		 
+		 xmlhttp.timeout = 20000;
+		xmlhttp.ontimeout = function() {
+			 //alert('timeout');
+			 changeServer();addRequests(list);
+			 //document.dispatchEvent(event);
+			 //loadRequests();	
+			 };
+		 
+		 xmlhttp.onreadystatechange = function() {
+  //alert(this.readyState+'sdf'+this.status);
+  
+  if (this.readyState == 4 && (this.status == 404 )) {changeServer();addRequests(list);}
+        if (this.readyState == 4 && this.status == 200) {
+		  var myObj = JSON.parse(this.responseText);
+		 //alert(stlb1.length);
+		 
+		// document.getElementById('loaderScreen').style.display = 'none';
+		 
+         
+		
+		
+		//alert(myObj[0].id);
+		
+		if(myObj[0].id!='00'){
+		
+		var k=stlb1.length;
+		var l=stlb1.length;
+		var minimumHeight=document.getElementById('requesterSign').clientHeight;
+		
+		do{
+		
+		
+		stlb1[k] = document.createElement('tr');
+		stlb1[k].innerHTML = '( :-) )';
+		stlb1[k].style.backgroundColor="#00FF00";
+		//alert(k);
+		
+		stlb2[k] = document.createElement('tr');
+		
+		
+		stlb2[k].innerHTML = myObj[k-l].requests;
+		//alert(stlb2[k].innerHTML);
+		requestNumber[k] =  myObj[k-l].empt1;
+		stlb3[k] = document.createElement('tr');
+		stlb3[k].innerHTML = '( :-( )';
+		stlb3[k].style.backgroundColor="red";
+		
+		
+		stlb1[k-1].before(stlb1[k]);
+		stlb2[k-1].before(stlb2[k]);
+		stlb3[k-1].before(stlb3[k]);
+		
+		
+		stlb1[k].style.color="black";
+		if(stlb2[k].clientHeight<minimumHeight) {
+		stlb1[k].style.height=minimumHeight+"px";
+		stlb2[k].style.height=minimumHeight+"px";
+		stlb3[k].style.height=minimumHeight+"px";
+		}else{
+		stlb1[k].style.height=stlb2[k].clientHeight+"px";
+		stlb3[k].style.height=stlb2[k].clientHeight+"px";
+		}
+		stlb1[k].addEventListener("touchstart", handleLike, false);
+		stlb1[k].id=k;
+		k++;
+		}while(k<l+myObj.length);
+		//requestsNumberOnScreen+=myObj.length;
+		//tbl.appendChild(s1);
+		//tbl.appendChild(s2);
+		//tbl.appendChild(s3); 
+	/*	
+		
+		s1.style.width="15%";
+		s1.style.fontSize="100%";
+		s2.style.width="70%";
+		s2.style.fontSize="100%";
+		s3.style.width="15%";
+		s3.style.fontSize="100%";
+		s4.style.width="0%";
+		s4.style.fontSize="0%"; 
+		*/
+		
+		//document.dispatchEvent(eventStartTimer);
+		//document.removeEventListener("startRefreshTimer",startRefreshTimer, false);
+		
+		
+		}
+		}
+		};
+		xmlhttp.open("GET", serverName+'/giveMeRequest.php?ids='+JSON.stringify(list), true);
+		xmlhttp.send();//+JSON.stringify(idsList)JSON.stringify(list)
+		
+		 
+			
+		}
+		
+		function sendRqst(e) {
+			//
+			var pattern = /^[\s]+$/;
+ if(pattern.test(txtarea.value) || txtarea.value==''){alert('Реквестер не будет это отправлять.');}else{
+		var xmlhttp1 = new XMLHttpRequest();
+		
+		 xmlhttp1.timeout = 20000;
+		xmlhttp1.ontimeout = function() {
+			 //alert('timeout');
+			 changeServer();sendRqst(e);
+			 //document.dispatchEvent(event);
+			 //loadRequests();	
+			 };
+		
+		xmlhttp1.onreadystatechange = function() {
+  if (this.readyState == 4 && (this.status == 404 )) {alert('sd');changeServer();sendRqst(e);}
+		if (this.readyState == 4 && this.status == 200) {
+         alert('ОТПРАВЛЕНО');
+		   setIdList(this.responseText,txtarea.value)  ; 
+		
+ 
+
+		}
+		};
+		
+		//alert(JSON.stringify(idsList));
+		
+		xmlhttp1.open("GET", serverName+"/index.php?req="+txtarea.value, true);
+		xmlhttp1.send();
+		}
+		}
+		
+		
+		
+		
+		function handleEnd(e) {
+     
+		f=false;
+		f2=false;
+		f3=false;
+	
+		}
+  
+		var curY;
+		f=false;
+		var f3=false;
+		var f1=true;
+ 
+		function handleMove(e) {
+   
+		if (f2&&!f3){if(Math.abs(Math.floor(curY-e.changedTouches[0].pageX))>100){f3=true;f1=!f1}}
+		if (f2==false){f2=true;curY=e.changedTouches[0].pageX;}
+    
+    
+		curY1=e.changedTouches[0].pageY;
+  
+		var i;
+		if (f1){
+	//alert();
+		s1.style.width="15%";
+		s1.style.fontSize="100%";
+		s2.style.width="70%";
+		s2.style.fontSize="100%";
+		s3.style.width="15%";
+		s3.style.fontSize="100%";
+		s4.style.width="0%";
+		s4.style.fontSize="0%";
+	//input1.width="0%";
+	//input1.style.fontSize="0%";
+		input1.style.display = 'none';
+		txtarea.style.display = 'none';
+		document.getElementById('refreshRqst').style.display = 'block';
+	}	
+	else{
+	
+	
+	s1.style.width="0%";
+	s1.style.fontSize="0%";
+	s2.style.width="0%";
+	s2.style.fontSize="0%";
+	s3.style.width="0%";
+	s3.style.fontSize="0%";
+	s4.style.width="100%";
+	s4.style.fontSize="100%";
+	document.getElementById('refreshRqst').style.display = 'none';
+	//input1.width="100%";
+	//input1.style.fontSize="100%";
+	input1.style.display = 'block';
+	txtarea.style.display = 'block';
+	
+	}
+	
+	
+	
+      
+	}
+		
+		
+		
+		
+		loadIdList();
+		
+		
+		
+		
+		function prepareIdList(e){
+		
+		idsList=JSON.parse(e.idsList);
+		//alert(e.idsList);
+		
+		loadRequests();
+		}
+		
+		
+		
+		function loadRequests()
+		{
+		
+		 var xmlhttp = new XMLHttpRequest();
+ xmlhttp.timeout = 20000; //alert();
+ //changeServer();
+		 xmlhttp.ontimeout = function() {
+			 //alert('timeout');
+			 changeServer();loadRequests();
+			 //document.dispatchEvent(event);
+			 //loadRequests();	
+			 };
+
+	xmlhttp.onreadystatechange = function() {
+ // alert(this.readyState+'sdf'+this.status);
+if (this.readyState == 4 && (this.status == 0 )) { setTimeout(function() { loadRequests(); }, 10000);}
+  if (this.readyState == 4 && (this.status == 404 )) {changeServer();loadRequests();}
+         if (this.readyState == 4 && this.status == 200) {
+		 document.getElementById('loaderScreen').style.display = 'none';
+		 //alert();
+         var myObj = JSON.parse(this.responseText);
+		//alert(myObj[0].requests);
+		var i;
+		i=0;
+		like = new Array();
+		if (stlb3.length!=0){
+		do{
+		s1.removeChild(stlb1[i]);
+		s2.removeChild(stlb2[i]);
+		s3.removeChild(stlb3[i]);
+		i++;
+		}while(i<stlb3.length);
+		
+		stlb1 = [];
+		stlb2 = [];
+		stlb3 = [];
+		}
+		k=0;
+		var minimumHeight=document.getElementById('requesterSign').clientHeight;
+		
+		do{
+		
+		
+		stlb1[k] = document.createElement('tr');
+		stlb1[k].innerHTML = '( :-) )';
+		stlb1[k].style.backgroundColor="#00FF00";
+		
+		
+		stlb2[k] = document.createElement('tr');
+		
+		
+		stlb2[k].innerHTML = myObj[k].requests;
+		requestNumber[k] =  myObj[k].empt1;
+		stlb3[k] = document.createElement('tr');
+		stlb3[k].innerHTML = '( :-( )';
+		stlb3[k].style.backgroundColor="red";
+		//stlb1[k].style.height=getComputedStyle(stlb2[k]).height;
+		s1.appendChild(stlb1[k]);
+		s2.appendChild(stlb2[k]);
+		s3.appendChild(stlb3[k]);
+		//stlb3[k].innerHTML = ':-('+stlb2[k].clientHeight;
+		stlb1[k].style.color="black";
+		if(stlb2[k].clientHeight<minimumHeight) {
+		stlb1[k].style.height=minimumHeight+"px";
+		stlb2[k].style.height=minimumHeight+"px";
+		stlb3[k].style.height=minimumHeight+"px";
+		}else{
+		stlb1[k].style.height=stlb2[k].clientHeight+"px";
+		stlb3[k].style.height=stlb2[k].clientHeight+"px";
+		}
+		stlb1[k].addEventListener("touchstart", handleLike, false);
+		stlb1[k].id=k;
+		k++;
+		}while(k<myObj.length);
+		//requestsNumberOnScreen=myObj.length;
+		tbl.appendChild(s1);
+		tbl.appendChild(s2);
+		tbl.appendChild(s3); 
+		
+		
+		s1.style.width="15%";
+		s1.style.fontSize="100%";
+		s2.style.width="70%";
+		s2.style.fontSize="100%";
+		s3.style.width="15%";
+		s3.style.fontSize="100%";
+		s4.style.width="0%";
+		s4.style.fontSize="0%"; 
+		
+		
+		document.dispatchEvent(eventStartTimer);
+		document.removeEventListener("startRefreshTimer",startRefreshTimer, false);
+		
+		
+		}
+		
+		};
+		xmlhttp.open("GET", serverName+'/giveMeRequest.php?ids='+JSON.stringify(idsList), true);
+		xmlhttp.send();//+JSON.stringify(idsList)
+		
+		}
+		
+		
+		
+		function loadIdList()
+		{
+		
+		
+		 var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+         db.transaction(queryDB, errorCB);
+		//var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+        //db.transaction(populateDB, errorCB, successCB);
+		
+	    // Query the database
+    //
+    function populateDB(tx) {
+        //tx.executeSql('DROP TABLE IF EXISTS DEMO');
+        //tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id , data)');
+       // tx.executeSql('INSERT INTO DEMO (id, data) VALUES (1, "First row")');
+       // tx.executeSql('INSERT INTO DEMO (id, data) VALUES (2, "Second row")');
+    }
+	
+	
+	function queryDB(tx) {
+		//alert('dfg');
+		tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id , data)');
+        tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+		
+    }
+
+    // Query the success callback
+    //
+    function querySuccess(tx, results) {
+	
+        var len = results.rows.length;
+		//alert(len);
+		//event.txt="DEMO table: " + len + " rows found.";
+        
+		
+        if (len!=0){event.idsList="[";}
+		for (var i=0; i<len-1; i++){
+            console.log("Row = " + i + " ID = " + results.rows.item(i).id + " Data =  " + results.rows.item(i).data);
+			
+			event.idsList+='{"ids":"'+results.rows.item(i).id+'"},';
+		}
+		 if (len!=0){event.idsList+='{"ids":"'+results.rows.item(len-1).id+'"}]';}else{event.idsList='[{"ids":"0"}]'}
+		//alert("xcv"+event.idsList);
+		if (idProcessRefresh){
+		document.dispatchEvent(event);}else{
+			addRequests(JSON.parse(event.idsList));
+		}
+		idProcessRefresh=true;
+    }
+
+    // Transaction error callback
+    //
+    function errorCB(err) {
+       alert("Error processing SQL: "+err.code);
+    }
+
+    // Transaction success callback
+    //
+    function successCB() {
+        var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+        db.transaction(queryDB, errorCB);
+    }
+
+    // Cordova is ready
+    //
+    
+		
+		
+		}
+		
+function setIdList(id,request)
+		{
+		
+		
+		// var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+         //db.transaction(queryDB, errorCB);
+		var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+        db.transaction(populateDB, errorCB, successCB);
+		
+	    // Query the database
+    //
+    function populateDB(tx) {
+        //tx.executeSql('DROP TABLE IF EXISTS DEMO');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id , data)');
+        tx.executeSql('INSERT INTO DEMO (id, data) VALUES ("'+id+'", "'+request+'")');
+       // tx.executeSql('INSERT INTO DEMO (id, data) VALUES (2, "Second row")');
+    }
+	
+	
+	function querySuccess(tx, results) {
+	
+        var len = results.rows.length;
+		//alert(len);
+		//event.txt="DEMO table: " + len + " rows found.";
+        
+		
+        if (len!=0){event.idsList="[";}
+		for (var i=0; i<len-1; i++){
+            console.log("Row = " + i + " ID = " + results.rows.item(i).id + " Data =  " + results.rows.item(i).data);
+			
+			event.idsList+='{"ids":"'+results.rows.item(i).id+'"},';
+		}
+		 if (len!=0){event.idsList+='{"ids":"'+results.rows.item(len-1).id+'"}]';}else{event.idsList='[{"ids":"0"}]'}
+		//alert("xcv"+event.idsList);
+		document.dispatchEvent(event);
+    }
+	
+	function queryDB(tx) {
+        tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+		
+    }
+
+    // Query the success callback
+    //
+    
+
+    // Transaction error callback
+    //
+    function errorCB(err) {
+       alert(); console.log("Error processing SQL: "+err.code);
+    }
+
+    // Transaction success callback
+    //
+    function successCB() {
+        //var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+       // db.transaction(queryDB, errorCB);
+    }
+
+    // Cordova is ready
+    //
+    
+		
+		
+		}	
+
+
+
+function sendLikedRequests(){
+
+ var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+         db.transaction(queryDB, errorCB);
+		//var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+        //db.transaction(populateDB, errorCB, successCB);
+		
+	    // Query the database
+    //
+    
+	
+	function queryDB(tx) {
+        tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+		
+    }
+
+    // Query the success callback
+    //
+    function querySuccess(tx, results) {
+	
+        var len = results.rows.length;
+		//alert(len);
+		//event.txt="DEMO table: " + len + " rows found.";
+        
+		
+       var xmlhttpArr = [];
+		for (var i=0; i<len; i++){
+			
+            console.log("Row = " + i + " ID = " + results.rows.item(i).id + " Data =  " + results.rows.item(i).data);
+		
+		//alert(results.rows.item(i).data);
+		 xmlhttpArr[i] = new XMLHttpRequest();
+		
+		 
+		
+		xmlhttpArr[i].onreadystatechange = function() {
+   //alert(this.status);
+		if (this.readyState == 4 && this.status == 200) {
+         //alert(i);
+		//alert(results.rows.item(i).id);
+ //alert(this.status);
+
+		}
+		};
+		
+		//alert(JSON.stringify(idsList));
+		//xmlhttp1.open("GET", serverName+"/likedRequest.php?id="+"45"+"req="+'sdfdfs', true);
+		//alert(results.rows.item(i).data);
+		xmlhttpArr[i].open("GET", serverName+"/likedRequest.php?id="+results.rows.item(i).id+"&req="+results.rows.item(i).data, true);
+		xmlhttpArr[i].send();	
+			
+		}
+		
+		
+		
+		
+		//alert("xcv"+event.idsList);
+		
+    }
+
+    // Transaction error callback
+    //
+    function errorCB(err) {
+       alert('dds'); console.log("Error processing SQL: "+err.code);
+    }
+
+    // Transaction success callback
+    //
+    function successCB() {
+        var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+        db.transaction(queryDB, errorCB);
+    }
+
+
+}	
+		
+		
+		}
+		
+		
+		
+		
+	
+  
+
+  </script>
+	
+</body>
+
+</html>
